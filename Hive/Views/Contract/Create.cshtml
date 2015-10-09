@@ -1,0 +1,148 @@
+﻿@model Hive.Models.ContractViewModel
+@{
+    ViewBag.Title = "New Contract";
+    ViewBag.Description = "Create new contract";
+}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Contract Details</h3>
+        <div class="panel-options">
+        </div>
+    </div>
+    <div class="panel-body">
+
+        @using (Html.BeginForm("Create", "Contract", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contract.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Contract.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Contract.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.AccountId, Model.AvailableAccounts, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contract.ContractProjectType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EnumDropDownListFor(model => model.Contract.ContractProjectType, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Contract.ContractProjectType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contract.ContractDealType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EnumDropDownListFor(model => model.Contract.ContractDealType, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Contract.ContractDealType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contract.ContractSource, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EnumDropDownListFor(model => model.Contract.ContractSource, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Contract.ContractSource, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contract.ContractBillingType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EnumDropDownListFor(model => model.Contract.ContractBillingType, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Contract.ContractBillingType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contract.Start, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Contract.Start, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Contract.Start, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contract.Period, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Contract.Period, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Contract.Period, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contract.MonthlyBudget, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Contract.MonthlyBudget, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Contract.MonthlyBudget, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <table class="table table-model-2 table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Service</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Web Dev</td>
+                            <td>1</td>
+                            <td>$100</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        $("#AccountId").change(function () {
+            var selectedItem = $(this).val();
+            var ddlProjects= $("#ProjectId");
+            var projectProgress = $("#projects-loading-progress");
+            projectProgress.show();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "@(Url.RouteUrl("GetProjectsByAccountId"))",
+                data: { "accountId": selectedItem },
+                success: function (data) {
+                    ddlProjects.html('');
+                    $.each(data, function (id, option) {
+                        ddlProjects.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                    ddlProjects.hide();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve projects.');
+                    projectProgress.hide();
+                }
+            });
+        });
+    });
+    </script>
+
+}

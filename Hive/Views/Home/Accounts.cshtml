@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Hive.Data.Account>
+@{
+	ViewBag.Title = "Accounts";
+	ViewBag.Description = "Manage accounts";
+}
+@section scripts
+{
+<script src="~/Scripts/rwd-table/js/rwd-table.min.js"></script>
+
+}
+<!-- Responsive Table -->
+<div class="row">
+	<div class="col-md-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">All Accounts</h3>
+
+				<div class="panel-options">
+					<a href="#">
+						<i class="linecons-cog"></i>
+					</a>
+
+					<a href="#" data-toggle="panel">
+						<span class="collapse-icon">&ndash;</span>
+						<span class="expand-icon">+</span>
+					</a>
+
+					<a href="#" data-toggle="reload">
+						<i class="fa-rotate-right"></i>
+					</a>
+
+					<a href="#" data-toggle="remove">
+						&times;
+					</a>
+				</div>
+			</div>
+			<div class="panel-body">
+
+				<div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
+
+					<table cellspacing="0" class="table table-small-font table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>@Html.DisplayNameFor(model => model.CompanyName)</th>
+								<th data-priority="1">@Html.DisplayNameFor(model => model.AccountType)</th>
+								<th data-priority="3">@Html.DisplayNameFor(model => model.Domain)</th>
+								<th data-priority="1">@Html.DisplayNameFor(model => model.Created)</th>
+								<th data-priority="3">Contract End</th>
+								<th data-priority="3">Contract Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model)
+							{
+								<tr>
+									<td>
+										@Html.DisplayFor(modelItem => item.CompanyName)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.AccountType)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.Domain.Name)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.Created)
+									</td>
+									<td></td>
+									<td></td>
+								</tr>
+							}
+						</tbody>
+					</table>
+
+				</div>
+
+				<script type="text/javascript">
+							// This JavaScript Will Replace Checkboxes in dropdown toggles
+							jQuery(document).ready(function($)
+							{
+								setTimeout(function()
+								{
+									$(".checkbox-row input").addClass('cbr');
+									cbr_replace();
+								}, 0);
+							});
+				</script>
+
+
+			</div>
+
+		</div>
+	</div>
+</div>
